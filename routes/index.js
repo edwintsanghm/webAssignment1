@@ -10,7 +10,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('./pages/index', { title: 'Express' });
+  res.render('./pages/index', { title: 'Home Page' });
 });
 
 router.get('/about', function(req, res, next) {
@@ -18,20 +18,17 @@ router.get('/about', function(req, res, next) {
 });
 
 router.get('/projects', function(req, res, next) {
-  res.render('./pages/projects', { title: 'About Me' });
+  res.render('./pages/projects', { title: 'Projects' });
 });
 
 router.get('/services', function(req, res, next) {
-  res.render('./pages/services', { title: 'About Me' });
+  res.render('./pages/services', { title: 'Services' });
 });
 
 router.get('/contact', function(req, res, next) {
-  res.render('./pages/contact', { title: 'About Me' });
+  res.render('./pages/contact', { title: 'Contact Me' });
 });
 
-router.get('/users', function(req, res, next) {
-  res.render('./pages/users', { title: 'About Me' });
-});
 
 
 
