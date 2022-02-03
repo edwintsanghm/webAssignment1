@@ -29,6 +29,19 @@ router.get('/contact', function(req, res, next) {
   res.render('./pages/contact', { title: 'Contact Me' });
 });
 
+router.post("/",function(req,res){
+  
+  console.log('req', req);
+  var name=req.body.name;
+  
+  var email=req.body.email;
+  var message=req.body.message;
+
+  console.log(name, email, message);
+
+  res.redirect("/");
+});
+
 
 
 

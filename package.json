@@ -2,7 +2,6 @@
   "name": "webassignment1",
   "version": "0.0.0",
   "private": true,
-  "main": "./app,js",
   "scripts": {
     "dev": "nodemon ./bin/www localhost 3000",
     "start": "node ./bin/www"
