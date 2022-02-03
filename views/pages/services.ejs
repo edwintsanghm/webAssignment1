@@ -1,25 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
   <%- include('../partials/head'); %>
 </head>
+
 <body class="container">
 
-<header>
-  <%- include('../partials/header'); %>
-</header>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
 
-<main>
-  <div class="jumbotron">
-    <h1>Services</h1>
-    <p>List of Services</p>
-  </div>
-</main>
+  <main>
+    <div class="jumbotron">
+      <h1>Services</h1>
 
-<footer>
-  <%- include('../partials/footer'); %>
-</footer>
+      <div class="d-flex flex-wrap bd-highlight mb-3">
+        <div class="p-2 bd-highlight align-self-stretch">
+          <div class="card" style="width: 18rem;">
+            <img
+              src="https://get.pxhere.com/photo/desk-writing-work-hand-man-working-person-pencil-people-male-meeting-corporate-office-communication-two-professional-business-paper-caucasian-partnership-team-design-plan-teamwork-learning-discuss-notes-discussion-businessman-workplace-paperwork-two-people-computers-laptops-cooperation-people-talking-explaining-colleagues-consultant-collaborate-two-people-talking-businesspeople-596254.jpg"
+              class="card-img-top" alt="Professional IT Consultancy">
+            <div class="card-body">
+              <h5 class="card-title">Professional IT Consultancy</h5>
+              <p class="card-text">Provide professional IT consultancy to help you and your company to grow.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+        <div class="p-2 bd-highlight align-self-stretch">
+          <div class="card" style="width: 18rem;">
+            <img
+              src="https://get.pxhere.com/photo/computer-work-screen-technology-gadget-coding-html-programming-brand-font-programmer-design-text-ethernet-software-development-code-screenshot-data-developing-ide-php-code-editor-910940.jpg"
+              class="card-img-top" alt="Software Development">
+            <div class="card-body">
+              <h5 class="card-title">Software Development</h5>
+              <p class="card-text">Develop software based on your company's needs.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+        <div class="p-2 bd-highlight align-self-stretch">
+          <div class="card" style="width: 18rem;">
+            <img
+              src="https://get.pxhere.com/photo/hand-people-isolated-finger-two-together-holding-product-partnership-team-hands-diagram-piece-teamwork-connect-puzzle-jigsaw-connection-unity-solution-pieces-thumb-cooperation-join-1105698.jpg"
+              class="card-img-top" alt="Solution Integration">
+            <div class="card-body">
+              <h5 class="card-title">Solution Integration</h5>
+              <p class="card-text">Integrate existing software product to solve business problems.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+        <div class="p-2 bd-highlight align-self-stretch">
+          <div class="card" style="width: 18rem;">
+            <img
+              src="https://get.pxhere.com/photo/hand-man-structure-board-guy-show-office-business-education-present-brand-project-startup-engineering-sketch-drawing-creativity-design-vision-diagram-strategy-marker-plan-school-whiteboard-planning-idea-draw-solution-college-presentation-development-teacher-marketing-management-explain-white-board-start-up-764635.jpg"
+              class="card-img-top" alt="IT Project Management">
+            <div class="card-body">
+              <h5 class="card-title">IT Project Management</h5>
+              <p class="card-text">Manage IT projects for your company.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
 
 </body>
+
 </html>
