@@ -12,6 +12,7 @@ var logger = require('morgan');
 
 var router = require('./routes');
 
+
 var app = express();
 
 // view engine setup
@@ -24,14 +25,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// router
 app.use('/', router);
-app.use('/about', router);
-app.use('/projects', router);
-app.use('/services', router);
-app.use('/contact', router);
-app.use('/users', router);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

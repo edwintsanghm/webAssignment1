@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
   <%- include('../partials/head'); %>
 </head>
+
 <body class="container">
 
-<header>
-  <%- include('../partials/header'); %>
-</header>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
 
-<main>
-  <div class="jumbotron">
-    <h1>Connect With Edwin</h1>
-    <p>Welcome to Edwin's personal site, <a href="/about">click here</a> to know more about me</p>
-  </div>
-</main>
+  <main>
+    <div class="jumbotron">
+      <h1>Connect With Edwin</h1>
+      <p>Welcome to Edwin's personal site, <a href="/about">click here</a> to know more about me</p>
 
-<footer>
-  <%- include('../partials/footer'); %>
-</footer>
+      <!-- show form data if exist -->
+      <% if (name && email && message) { %>
+        <p>Form data received: </p>
+        <p>Name: <%= name %>
+        </p>
+        <p>Email: <%= email %>
+        </p>
+        <p>Message: <%= message %>
+        </p>
+        <% } %>
+    </div>
+  </main>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
 
 </body>
+
 </html>

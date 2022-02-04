@@ -10,7 +10,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('./pages/index', { title: 'Home Page' });
+  
+  var name = req.query.name;
+  var email = req.query.email;
+  var message = req.query.message;
+  res.render('./pages/index', { title: 'Home Page', name: name, email: email, message: message});
 });
 
 router.get('/about', function(req, res, next) {
@@ -29,17 +33,15 @@ router.get('/contact', function(req, res, next) {
   res.render('./pages/contact', { title: 'Contact Me' });
 });
 
-router.post("/",function(req,res){
+router.post("/contact/formSubmit",function(req,res){
   
-  console.log('req', req);
   var name=req.body.name;
-  
   var email=req.body.email;
   var message=req.body.message;
 
   console.log(name, email, message);
 
-  res.redirect("/");
+  res.redirect("/?name="+name+"&email="+email+"&message="+message);
 });
 
 
