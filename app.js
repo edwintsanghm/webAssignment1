@@ -9,9 +9,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const { requireAuth } = require('./middleware/authMiddleware');
+const jwt = require('jsonwebtoken');
+const model = require('./routes/model');
 
 var router = require('./routes');
-
 
 var app = express();
 
@@ -25,8 +27,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const isLoggedIn = (req, res, next) => {
+  if(req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, 'Edwinsecret', async function(err, decoded) {
+      const user = await model.users.findById(decoded.id);
+      if(user)
+        req.isLoggedIn = true;
+      else 
+        req.isLoggedIn = false;
+    })
+  }else {
+    req.isLoggedIn = false;
+  }
+  return next();
+}
+app.use(isLoggedIn)
 // router
 app.use('/', router);
+app.get('/businessContacts', requireAuth, (req, res) => res.render('./pages/businessContacts', { title: 'Business Contacts' })
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
