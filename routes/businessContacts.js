@@ -13,8 +13,6 @@ router.get('/',  needAuthenticated, function (req, res) {
 router.get('/update/:id',  needAuthenticated, async function (req, res) {
     const id = req.params.id;
     const contactForUpdate = await contact.findById(id);
-
-    console.log(contactForUpdate);
     
     res.render('./pages/updateContact', { 
         title: 'Update Contacts', 

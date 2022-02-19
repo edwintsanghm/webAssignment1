@@ -20,7 +20,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/about', function(req, res, next) {
-  console.log('req', req.isAuthenticated());
   res.render('./pages/about', { title: 'About Me' , isLoggedIn: req.isAuthenticated()});
 });
 
