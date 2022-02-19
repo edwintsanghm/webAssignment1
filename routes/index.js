@@ -7,51 +7,36 @@
 
 var express = require('express');
 var router = express.Router();
-const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
-const model = require('./model');
-
-
-// const isLoggedIn = (req, res, next) => {
-//   if(req.cookies.jwt) {
-//     jwt.verify(req.cookies.jwt, 'Edwinsecret', async function(err, decoded) {
-//       const user = await model.users.findById(decoded.id);
-
-//       if(user)
-//         req.isLoggedIn = true;
-//       else 
-//         req.isLoggedIn = false;
-//     })
-//   }
-//   next();
-// }
 /* GET home page. */
+const User = require('../models/user');
+
 router.get('/', function(req, res, next) {
-  console.log(req.isLoggedIn, '99')
   var name = req.query.name;
   var email = req.query.email;
   var message = req.query.message;
-  res.render('./pages/index', { title: 'Home Page', name: name, email: email, message: message});
+  res.render('./pages/index', { title: 'Home Page', name: name, email: email, message: message, isLoggedIn: req.isAuthenticated()});
 });
 
 router.get('/about', function(req, res, next) {
-  console.log('req', req.isLoggedIn);
-  res.render('./pages/about', { title: 'About Me' });
+  console.log('req', req.isAuthenticated());
+  res.render('./pages/about', { title: 'About Me' , isLoggedIn: req.isAuthenticated()});
 });
 
-router.get('/projects', function(req, res, next) {
-  res.render('./pages/projects', { title: 'Projects' });
+router.get('/projects',   function(req, res, next) {
+  res.render('./pages/projects', { title: 'Projects', isLoggedIn: req.isAuthenticated() });
 });
 
-router.get('/services', function(req, res, next) {
-  res.render('./pages/services', { title: 'Services' });
+router.get('/services',   function(req, res, next) {
+  res.render('./pages/services', { title: 'Services', isLoggedIn: req.isAuthenticated() });
 });
 
-router.get('/contact', function(req, res, next) {
-  res.render('./pages/contact', { title: 'Contact Me' });
+router.get('/contact',   function(req, res, next) {
+  res.render('./pages/contact', { title: 'Contact Me', isLoggedIn: req.isAuthenticated() });
 });
 
-router.post("/contact/formSubmit",function(req,res){
+router.post("/contact/formSubmit", function(req,res){
   
   var name=req.body.name;
   var email=req.body.email;
@@ -60,53 +45,33 @@ router.post("/contact/formSubmit",function(req,res){
   res.redirect("/?name="+name+"&email="+email+"&message="+message);
 });
 
-router.get("/login",function(req,res,next){
-  res.render('./pages/login', { title: 'User Login' });
+router.get("/login", function(req,res,next){
+  res.render('./pages/login', { title: 'User Login', isLoggedIn: false  });
 });
 
-// router.post("/login", function(req,res ){
+router.post("/login", passport.authenticate('local',{ failureRedirect: '/login' }), async (req, res) => {
+  res.redirect('/businessContacts');
+});
 
-//   var username=req.body.username;
-//   var password=req.body.password;
-  
-//   model.users.find({ username: username, password: password }, function (err, docs) {
-//     if(docs[0] != null) {
-//       res.redirect('/businessContacts');
-//     } else {
-//       res.render('./pages/login', { title: 'User Login', message: 'Login Failed' });
-//     }
-//   });
-// });
+router.get('/register', function(req, res) {
+  res.render('./pages/register', {title: 'Register', isLoggedIn: false });
+});
 
-// create json web token
-const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, 'Edwinsecret', {
-    expiresIn: maxAge
+router.post('/register', function(req, res) {
+  User.register(new User({ username : req.body.username, emailAddress: req.body.email}), req.body.password, function(err, user) {
+    if (err) {
+        return res.render('register', {title: 'Register' ,info: "Sorry. That username already exists. Try again.", isLoggedIn: false});
+    }
+
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/');
+    });
   });
-};
-
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const user = await model.users.login(username, password);
-    const token = createToken(user._id);
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    // res.status(200).json({ user: user._id });
-    res.redirect('/businessContacts');
-  } 
-  catch (err) {
-    // const errors = handleErrors(err);
-    console.log(err)
-    // res.status(400).json({ errors });
-    res.render('./pages/login', { title: 'User Login', message: 'Login Failed' });
-
-  }
-
 });
 
-
-
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 module.exports = router;

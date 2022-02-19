@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <%- include('../partials/head'); %>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <h1>Update Contact</h1>
+            <form action="/businessContacts/update/<%=id%>" method="post">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" value="<%=contact.name%>"
+                        placeholder="Enter Contact Name">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Contact Number </label>
+                    <input type="text" class="form-control" name="phone" value="<%=contact.phone%>"
+                        placeholder="Enter Contact Number">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" value="<%=contact.emailAddress%>"
+                        placeholder="Enter Email">
+                </div>
+                <input type="hidden" name="id" value=<%-id%>>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+            <div class="float-right">
+                <button onclick="onCancelClick()" class="btn">Cancel</button>
+            </div>
+
+            <% if (typeof message !='undefined' && message) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= message %>
+                </div>
+                <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+<script>
+    console.log(window.location.pathname);
+    function onCancelClick() {
+        window.location.href = "/businessContacts";
+    }
+</script>
+
+</html>

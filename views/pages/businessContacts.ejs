@@ -17,6 +17,8 @@
     <main>
         <div class="jumbotron">
             <h1>BCV</h1>
+            <div id="main"></div>
+
         </div>
     </main>
 
@@ -25,5 +27,66 @@
     </footer>
 
 </body>
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
+
+
+<!-- Load our React component. -->
+<script type="text/babel">
+    const BusinessContactsTable = () => {
+        const [contacts, setContacts] = React.useState([]);
+
+        React.useEffect(() => {
+            axios.get('./businessContacts/contacts').then(response => {
+                setContacts(response.data)
+            }).catch(err => console.log(err));
+        }, [])
+
+        const updateContact = (contactId) => {
+            window.location.href = `./businessContacts/update/${contactId}`;
+        };
+        const deleteContact = (contactId) => {
+            axios.delete(`./businessContacts/delete/${contactId}`)
+                .then(response => {
+                    axios.get('./businessContacts/contacts').then(response => {
+                        setContacts(response.data)
+                    }).catch(err => console.log(err));
+                })
+        }
+
+        return (
+            <div>
+                {contacts.map((contact) =>
+                    <div className="d-flex justify-content-around" key={contact._id}>
+                        <div>
+                            {contact.name}
+                        </div>
+                        <div>
+                            {contact.phone}
+                        </div>
+                        <div>
+                            {contact.emailAddress}
+                        </div>
+                        <div>
+                            <button onClick={() => {
+                                updateContact(contact._id)
+                            }} >Update</button>
+                        </div>
+                        <div>
+                            <button onClick={() => deleteContact(contact._id)}>Delete</button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    ReactDOM.render(
+        <BusinessContactsTable />,
+        document.getElementById('main')
+    );
+</script>
 
 </html>

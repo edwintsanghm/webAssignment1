@@ -9,11 +9,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const { requireAuth } = require('./middleware/authMiddleware');
-const jwt = require('jsonwebtoken');
-const model = require('./routes/model');
-
-var router = require('./routes');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+const mongoose = require('mongoose');
 
 var app = express();
 
@@ -25,27 +24,27 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({secret:"Edwin", resave: true, saveUninitialized: true}))
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const isLoggedIn = (req, res, next) => {
-  if(req.cookies.jwt) {
-    jwt.verify(req.cookies.jwt, 'Edwinsecret', async function(err, decoded) {
-      const user = await model.users.findById(decoded.id);
-      if(user)
-        req.isLoggedIn = true;
-      else 
-        req.isLoggedIn = false;
-    })
-  }else {
-    req.isLoggedIn = false;
-  }
-  return next();
-}
-app.use(isLoggedIn)
-// router
-app.use('/', router);
-app.get('/businessContacts', requireAuth, (req, res) => res.render('./pages/businessContacts', { title: 'Business Contacts' })
-);
+var router = require('./routes');
+var bcvRouter = require('./routes/businessContacts');
+
+var User = require('./models/user');
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+const uri = "mongodb+srv://edwintsang:62800024@cluster0.v02we.mongodb.net/database?retryWrites=true&w=majority";
+
+// mongoose
+mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true});
+
+app.use(router);
+
+app.use('/businessContacts', bcvRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
